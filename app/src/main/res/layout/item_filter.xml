@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ImageView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/imgFilter"
+    android:layout_width="100dp"
+    android:layout_height="100dp"
+    android:layout_marginStart="@dimen/margin_half"
+    android:layout_marginTop="@dimen/margin_default"
+    android:layout_marginEnd="@dimen/margin_half"
+    android:layout_marginBottom="@dimen/margin_default"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent">
+
+</ImageView>

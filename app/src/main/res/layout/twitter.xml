@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:id="@+id/imgLogo"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/ic_launcher_background"
+        android:src="@drawable/ic_launcher_foreground"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/txtSignUp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Sign Up"
+        android:textColor="@android:color/holo_blue_light"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@id/imgLogo"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/imgLogo"
+        app:layout_constraintTop_toTopOf="@id/imgLogo" />
+
+    <ImageView
+        android:id="@+id/imgMenu"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@android:drawable/ic_menu_more"
+        app:layout_constraintBottom_toBottomOf="@id/txtSignUp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/txtSignUp"
+        app:layout_constraintTop_toTopOf="@id/txtSignUp" />
+
+    <TextView
+        android:id="@+id/txtLogInTo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:text="Log in to Twitter"
+        android:textSize="24sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/imgLogo" />
+
+    <TextView
+        android:id="@+id/txtUseHeader"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:text="Phone number, email address, or username"
+        android:textColor="#50505050"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/txtLogInTo" />
+
+    <EditText
+        android:id="@+id/etUser"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/txtUseHeader" />
+
+    <TextView
+        android:id="@+id/txtPwdHeader"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:text="Password"
+        android:textColor="#50505050"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/etUser" />
+
+    <EditText
+        android:id="@+id/etPwd"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:drawableEnd="@android:drawable/ic_menu_more"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/txtPwdHeader" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="Forgotten your password?"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/etPwd" />
+
+    <View
+        android:id="@+id/v1"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:background="#10505050"
+        app:layout_constraintBottom_toBottomOf="parent" />
+
+    <View
+        android:id="@+id/v2"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@android:color/holo_blue_light"
+        app:layout_constraintTop_toTopOf="@id/v1" />
+
+    <Button
+        android:id="@+id/btnLogIn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:text="Log In"
+        android:textAllCaps="false"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:background="@drawable/background_rounded_yellow"
+        app:layout_constraintEnd_toEndOf="parent" />
+</androidx.constraintlayout.widget.ConstraintLayout>

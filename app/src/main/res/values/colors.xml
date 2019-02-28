@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#262626</color>
+    <color name="colorPrimaryDark">@android:color/black</color>
+    <color name="colorAccent">#D81B60</color>
+    <color name="colorBackground">#333333</color>
+    <color name="colorPopupBackground">#444444</color>
+    <!--<color name="colorDefaultText">@android:color/white</color>-->
+    <color name="colorDefaultText">#b8ff0e</color>
+    <color name="filter_label_normal">#8A8889</color>
+    <color name="filter_label_selected">#221F20</color>
+</resources>

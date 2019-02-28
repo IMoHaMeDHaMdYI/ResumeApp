@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<MotionScene xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:motion="http://schemas.android.com/apk/res-auto">
+    <Transition
+        motion:constraintSetEnd="@id/state_end"
+        motion:constraintSetStart="@id/state_start"
+        motion:interpolator="easeInOut"
+        motion:duration="500">
+    </Transition>
+
+    <ConstraintSet android:id="@+id/state_start">
+        <Constraint
+            android:id="@id/viewPopup"
+            android:layout_width="0dp"
+            android:layout_height="300dp"
+            android:layout_marginStart="@dimen/margin_double"
+            android:layout_marginEnd="@dimen/margin_double"
+            android:background="@color/colorPopupBackground"
+            android:elevation="3dp"
+            motion:layout_constraintBottom_toBottomOf="parent"
+            motion:layout_constraintEnd_toEndOf="parent"
+            motion:layout_constraintStart_toStartOf="parent"
+            motion:layout_constraintTop_toTopOf="parent"
+            motion:layout_constraintVertical_bias="0.3" />
+
+        <Constraint
+            android:id="@id/tv"
+            android:layout_width="300dp"
+            android:layout_height="250dp"
+            android:layout_margin="@dimen/margin_default"
+            android:elevation="3dp"
+            android:gravity="center"
+            android:text="Hello"
+            android:textColor="@color/colorDefaultText"
+            motion:layout_constraintBottom_toBottomOf="@id/viewPopup"
+            motion:layout_constraintEnd_toEndOf="@id/viewPopup"
+            motion:layout_constraintStart_toStartOf="@id/viewPopup"
+            motion:layout_constraintTop_toTopOf="@id/viewPopup"
+            motion:setDelay="50" />
+
+        <Constraint
+            android:id="@id/btnNo"
+            android:layout_width="100dp"
+            android:layout_height="50dp"
+            android:background="@drawable/backgroung_rounded_borders"
+            android:text="@string/no"
+            android:textColor="@color/colorDefaultText"
+            motion:layout_constraintBottom_toBottomOf="@id/btnYes"
+            motion:layout_constraintStart_toStartOf="@id/viewPopup" />
+
+        <Constraint
+            android:id="@id/btnYes"
+            android:layout_width="100dp"
+            android:layout_height="50dp"
+            android:layout_marginBottom="@dimen/margin_double"
+            android:background="@drawable/background_rounded_yellow"
+            android:text="@string/hell_yes"
+            android:textColor="@android:color/holo_red_light"
+            motion:layout_constraintBottom_toBottomOf="parent"
+            motion:layout_constraintEnd_toEndOf="@id/viewPopup" />
+
+        <Constraint
+            android:id="@id/rv"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:visibility="visible"
+            motion:layout_constraintTop_toBottomOf="@id/tv"
+            motion:layout_constraintEnd_toEndOf="@id/viewPopup"
+            motion:layout_constraintStart_toStartOf="@id/viewPopup"/>
+
+    </ConstraintSet>
+    <ConstraintSet android:id="@+id/state_end">
+        <Constraint
+            android:id="@id/viewPopup"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginStart="@dimen/margin_default"
+            android:layout_marginTop="@dimen/margin_default"
+            android:layout_marginEnd="@dimen/margin_default"
+            android:layout_marginBottom="@dimen/margin_default"
+            android:background="@color/colorPopupBackground"
+            android:elevation="3dp"
+            motion:layout_constraintBottom_toBottomOf="parent"
+            motion:layout_constraintEnd_toEndOf="parent"
+            motion:layout_constraintStart_toStartOf="parent"
+            motion:layout_constraintTop_toTopOf="parent"
+            motion:layout_constraintVertical_bias="0.3" />
+
+        <Constraint
+            android:id="@id/tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:elevation="3dp"
+            android:text="Hello"
+            android:textColor="@color/colorDefaultText"
+            motion:layout_constraintStart_toStartOf="@id/viewPopup"
+            motion:layout_constraintTop_toTopOf="@id/viewPopup"
+            motion:setDelay="50">
+        </Constraint>
+
+        <Constraint
+            android:id="@id/btnNo"
+            android:layout_width="100dp"
+            android:layout_height="50dp"
+            android:background="@drawable/backgroung_rounded_borders"
+            android:text="@string/no"
+            android:textColor="@color/colorDefaultText"
+            android:visibility="invisible"
+            motion:layout_constraintBottom_toBottomOf="@id/btnYes"
+            motion:layout_constraintStart_toStartOf="@id/viewPopup" />
+
+        <Constraint
+            android:id="@id/btnYes"
+            android:layout_width="100dp"
+            android:layout_height="50dp"
+            android:layout_marginBottom="@dimen/margin_double"
+            android:background="@drawable/background_rounded_yellow"
+            android:text="@string/hell_yes"
+            android:textColor="@android:color/holo_red_light"
+            android:visibility="invisible"
+            motion:layout_constraintBottom_toBottomOf="parent"
+            motion:layout_constraintEnd_toEndOf="@id/viewPopup" />
+
+        <Constraint
+            android:id="@id/rv"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:visibility="visible"
+            motion:layout_constraintEnd_toEndOf="@id/viewPopup"
+            motion:layout_constraintStart_toStartOf="@id/viewPopup"
+            motion:layout_constraintTop_toBottomOf="@id/tv"
+            motion:layout_constraintBottom_toBottomOf="@id/viewPopup" />
+    </ConstraintSet>
+</MotionScene>

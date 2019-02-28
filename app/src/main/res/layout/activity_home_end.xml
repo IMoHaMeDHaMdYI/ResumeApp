@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.motion.widget.MotionLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:motion="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/motionLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorBackground"
+    tools:context=".intro.ui.activities.HomeActivity">
+
+    <View
+        android:id="@+id/viewPopup"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="@dimen/margin_default"
+        android:background="@color/colorPopupBackground"
+        android:elevation="3dp"
+        motion:layout_constraintBottom_toBottomOf="parent"
+        motion:layout_constraintEnd_toEndOf="parent"
+        motion:layout_constraintStart_toStartOf="parent"
+        motion:layout_constraintTop_toTopOf="parent" />
+
+    <mohamed.mohamedresume.intro.ui.customviews.TextAnimatorView
+        android:id="@+id/tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/margin_default"
+        android:elevation="3dp"
+        android:gravity="center"
+        android:textColor="@color/colorDefaultText"
+        motion:layout_constraintStart_toStartOf="@id/viewPopup"
+        motion:layout_constraintTop_toTopOf="@id/viewPopup"
+        motion:setDelay="100" />
+
+    <Button
+        android:id="@+id/btnNo"
+        android:layout_width="100dp"
+        android:layout_height="50dp"
+        android:background="@drawable/backgroung_rounded_borders"
+        android:text="@string/no"
+        android:textColor="@color/colorDefaultText"
+        android:visibility="invisible"
+        motion:layout_constraintBottom_toBottomOf="@id/btnYes"
+        motion:layout_constraintStart_toStartOf="@id/viewPopup" />
+
+    <Button
+        android:id="@+id/btnYes"
+        android:layout_width="100dp"
+        android:layout_height="50dp"
+        android:layout_marginBottom="@dimen/margin_double"
+        android:background="@drawable/background_rounded_yellow"
+        android:text="@string/hell_yes"
+        android:textColor="@android:color/holo_red_light"
+        android:visibility="invisible"
+        motion:layout_constraintBottom_toBottomOf="parent"
+        motion:layout_constraintEnd_toEndOf="@id/viewPopup" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:visibility="invisible"
+        motion:layout_constraintEnd_toEndOf="@id/viewPopup"
+        motion:layout_constraintStart_toStartOf="@id/viewPopup"
+        motion:layout_constraintTop_toTopOf="@id/viewPopup" />
+
+</androidx.constraintlayout.motion.widget.MotionLayout>

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".imageeditor.ui.ImageBrowserActivity">
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/colorBackground"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/btnAdd"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/margin_default"
+        android:src="@android:drawable/ic_input_add"
+        android:tint="@color/colorDefaultText"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <mohamed.mohamedresume.imageeditor.ui.CustomFrameLayout
+        android:id="@+id/frameFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:elevation="6dp"
+        android:visibility="invisible" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/btnDelete"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/margin_default"
+        android:src="@drawable/ic_delete"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+</androidx.constraintlayout.widget.ConstraintLayout>

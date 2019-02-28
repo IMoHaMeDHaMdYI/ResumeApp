@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="60dp"
+    tools:context=".mediaplayer.audio.ui.ControllerFragment">
+
+    <ImageView
+        android:id="@+id/btnPlay"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:src="@android:drawable/ic_media_play"
+        android:tint="@color/colorDefaultText"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/seekBar" />
+
+
+    <androidx.appcompat.widget.AppCompatSeekBar
+        android:id="@+id/seekBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:progress="0"
+        android:progressTint="@color/colorDefaultText"
+        android:thumbTint="@color/colorDefaultText" />
+
+    <ImageView
+        android:id="@+id/btnNext"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:src="@android:drawable/ic_media_next"
+        android:tint="@color/colorDefaultText"
+        app:layout_constraintBottom_toBottomOf="@id/seekBar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/btnPlay"
+        app:layout_constraintTop_toBottomOf="parent" />
+
+    <ImageView
+        android:id="@+id/btnPrevious"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:src="@android:drawable/ic_media_previous"
+        android:tint="@color/colorDefaultText"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/btnPlay"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/seekBar" />
+</androidx.constraintlayout.widget.ConstraintLayout>

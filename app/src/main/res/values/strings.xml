@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">Mohamed Resume</string>
+    <string name="no">No</string>
+    <string name="hell_yes">Hell Yes</string>
+    <string name="user_does_not_exist">User Does Not Exist</string>
+    <string name="notification_channel">music notification</string>
+    <string name="add">Add</string>
+    <string name="filter_normal">normal</string>
+</resources>
