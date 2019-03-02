@@ -1,4 +1,4 @@
-package mohamed.mohamedresume.utils
+package mohamed.mohamedresume.extensions
 
 open class SingletonHolder<out T, in A>(creator: (A) -> T) {
 

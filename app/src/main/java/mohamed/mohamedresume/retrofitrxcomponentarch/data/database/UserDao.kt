@@ -7,11 +7,10 @@ import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import io.reactivex.Flowable
 import io.reactivex.Maybe
-import io.reactivex.Observable
-import io.reactivex.Single
 
 @Dao
 interface UserDao {
+
     @Query("SELECT * FROM user")
     fun getAllUsers(): LiveData<Array<GitHubDbUser>>
 
@@ -26,4 +25,5 @@ interface UserDao {
 
     @Query("SELECT * FROM user WHERE login = :log")
     fun getUser(log: String): Maybe<GitHubDbUser>
+
 }

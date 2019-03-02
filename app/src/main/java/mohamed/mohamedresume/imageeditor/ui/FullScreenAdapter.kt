@@ -8,7 +8,7 @@ import androidx.viewpager.widget.PagerAdapter
 import kotlinx.android.synthetic.main.item_full_screen.view.*
 import mohamed.mohamedresume.R
 import mohamed.mohamedresume.imageeditor.models.Image
-import mohamed.mohamedresume.utils.GlideApp
+import mohamed.mohamedresume.extensions.GlideApp
 
 class FullScreenAdapter(private val context: Context, private val imageList: ArrayList<Image>) : PagerAdapter() {
     override fun instantiateItem(container: ViewGroup, position: Int): Any {

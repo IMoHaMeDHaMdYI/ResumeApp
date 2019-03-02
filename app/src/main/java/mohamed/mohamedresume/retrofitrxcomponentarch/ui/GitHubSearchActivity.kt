@@ -17,7 +17,7 @@ import mohamed.mohamedresume.retrofitrxcomponentarch.ui.adpater.GitHubDataSource
 import mohamed.mohamedresume.retrofitrxcomponentarch.ui.adpater.GitHubUserAdapter
 import mohamed.mohamedresume.retrofitrxcomponentarch.ui.adpater.UserAdapter
 import mohamed.mohamedresume.retrofitrxcomponentarch.viewmodels.GitHubViewModel
-import mohamed.mohamedresume.utils.onQuerySubmitted
+import mohamed.mohamedresume.extensions.onQuerySubmitted
 
 class GitHubSearchActivity : AppCompatActivity() {
 

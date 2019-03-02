@@ -17,12 +17,11 @@ import mohamed.mohamedresume.models.Result
 import mohamed.mohamedresume.retrofitrxcomponentarch.data.database.GitHubDataBase
 import mohamed.mohamedresume.retrofitrxcomponentarch.data.database.GitHubDbUser
 import mohamed.mohamedresume.retrofitrxcomponentarch.models.GitHubUser
-import mohamed.mohamedresume.utils.get
+import mohamed.mohamedresume.extensions.get
 
 class GitHubRepository(
-    private val githubClient: GitHubClient = GitHubClient.githubClient,
-    private val db: GitHubDataBase
-) {
+        private val githubClient: GitHubClient = GitHubClient.githubClient,
+        db: GitHubDataBase) {
 
     private val userDao = db.userDao()
     private val compositeDisposable = CompositeDisposable()
@@ -55,10 +54,10 @@ class GitHubRepository(
 
 
     fun getUserFromDb(
-        id: Long
-        , userExists: (user: GitHubUser) -> Unit
-        , userAdded: () -> Unit
-        , errorOccurred: (t: Error) -> Unit
+            id: Long
+            , userExists: (user: GitHubUser) -> Unit
+            , userAdded: () -> Unit
+            , errorOccurred: (t: Error) -> Unit
     ): Disposable {
         return userDao.getUser(id).get({
             userExists(it.toGitHubUser())
@@ -70,10 +69,10 @@ class GitHubRepository(
     }
 
     fun getUserFromDb(
-        log: String
-        , userExists: (user: GitHubUser) -> Unit
-        , userAdded: () -> Unit
-        , errorOccurred: (t: Error) -> Unit
+            log: String
+            , userExists: (user: GitHubUser) -> Unit
+            , userAdded: () -> Unit
+            , errorOccurred: (t: Error) -> Unit
     ): Disposable {
         return userDao.getUser(log).get({
             userExists(it.toGitHubUser())
@@ -95,8 +94,8 @@ class GitHubRepository(
             val disposable = Completable.fromAction {
                 userDao.insertUser(GitHubDbUser.fromGitHubUser(user))
             }.subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe()
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe()
             stateLiveData.value = newUserAdded
             compositeDisposable.add(disposable)
 
@@ -112,4 +111,5 @@ class GitHubRepository(
     fun onClear() {
         compositeDisposable.clear()
     }
+
 }

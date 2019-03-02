@@ -11,13 +11,13 @@ import mohamed.mohamedresume.R
 import mohamed.mohamedresume.intro.ui.adapters.BaseAdapter
 import mohamed.mohamedresume.retrofitrxcomponentarch.models.GitHubUser
 import mohamed.mohamedresume.retrofitrxcomponentarch.models.ISourceAdapter
-import mohamed.mohamedresume.utils.GlideApp
+import mohamed.mohamedresume.extensions.GlideApp
 
 class GitHubUserAdapter(
-    private val context: Context, private val userList: ArrayList<GitHubUser>,
-    private val onAddClicked: (user: GitHubUser) -> Unit = {}
+        private val context: Context, private val userList: ArrayList<GitHubUser>,
+        private val onAddClicked: (user: GitHubUser) -> Unit = {}
 ) :
-    BaseAdapter<GitHubUserViewHolder, GitHubUser>(context, userList), ISourceAdapter {
+        BaseAdapter<GitHubUserViewHolder, GitHubUser>(context, userList), ISourceAdapter {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GitHubUserViewHolder {
         return when (viewType) {
             HOLDER -> {
@@ -34,7 +34,7 @@ class GitHubUserAdapter(
     override fun onBindViewHolder(holder: GitHubUserViewHolder, position: Int) {
         if (userList.size == 0) return
         val user = userList[position]
-        holder.bind(user,onAddClicked)
+        holder.bind(user, onAddClicked)
 //        holder.apply {
 //            tvName?.text = user.name ?: user.login ?: "UnKnown !"
 //            GlideApp.with(context)
@@ -62,9 +62,9 @@ class GitHubUserViewHolder(val view: View) : RecyclerView.ViewHolder(view) {
     fun bind(user: GitHubUser, onAddClicked: (user: GitHubUser) -> Unit = {}) {
         tvName?.text = user.name ?: user.login ?: "UnKnown !"
         GlideApp.with(view.context)
-            .load(user.avatarUrl)
-            .circleCrop()
-            .into(imgAvatar!!)
+                .load(user.avatarUrl)
+                .circleCrop()
+                .into(imgAvatar!!)
         motionLayout?.transitionToEnd()
         imgAdd?.apply {
             visibility = if (user.saved) {

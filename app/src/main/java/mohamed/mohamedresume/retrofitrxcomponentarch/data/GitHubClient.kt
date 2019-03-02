@@ -17,15 +17,14 @@ interface GitHubClient {
     fun getUser(@Path("username") username: String): Single<GitHubUser>
 
     companion object {
-        private val retrofit: Retrofit by lazy {
-            Retrofit.Builder().baseUrl(githubUrl)
-                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-                .addConverterFactory(GsonConverterFactory.create())
-                .client(OkHttpClient.Builder().retryOnConnectionFailure(true).build())
-                .build()
-        }
         val githubClient: GitHubClient by lazy {
-            retrofit.create(GitHubClient::class.java)
+            Retrofit.Builder().baseUrl(githubUrl)
+                    .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .client(OkHttpClient.Builder().retryOnConnectionFailure(true).build())
+                    .build()
+                    .create(GitHubClient::class.java)
         }
     }
+
 }

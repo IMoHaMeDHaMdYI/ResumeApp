@@ -10,17 +10,14 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import kotlinx.android.synthetic.main.activity_camera.*
-import kotlinx.android.synthetic.main.activity_image_browser.*
 import mohamed.mohamedresume.R
 import mohamed.mohamedresume.hardcodeddata.IMAGE_DIRECTORY
 import mohamed.mohamedresume.imageeditor.CameraHelper
-import mohamed.mohamedresume.imageeditor.models.Image
-import mohamed.mohamedresume.utils.GlideApp
+import mohamed.mohamedresume.extensions.GlideApp
 import java.io.File
 import java.io.FileOutputStream
 import java.io.OutputStream
 import java.util.*
-import kotlin.collections.ArrayList
 
 
 //TODO Encrypt images before saving...

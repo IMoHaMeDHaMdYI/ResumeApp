@@ -3,23 +3,21 @@ package mohamed.mohamedresume.retrofitrxcomponentarch.data.datasource
 import androidx.paging.ItemKeyedDataSource
 import io.reactivex.Completable
 import io.reactivex.Flowable
-import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 import io.reactivex.functions.Action
 import io.reactivex.schedulers.Schedulers
-import mohamed.mohamedresume.hardcodeddata.unKnownException
-import mohamed.mohamedresume.models.Error
 import mohamed.mohamedresume.models.Result
 import mohamed.mohamedresume.retrofitrxcomponentarch.data.database.GitHubDbUser
 import mohamed.mohamedresume.retrofitrxcomponentarch.data.database.UserDao
-import mohamed.mohamedresume.utils.get
+import mohamed.mohamedresume.extensions.get
 
 class UserDataSource(
         private val userDao: UserDao
         , private val compositeDisposable: CompositeDisposable
 ) : ItemKeyedDataSource<Long, Result<GitHubDbUser>>() {
+
     override fun loadInitial(params: LoadInitialParams<Long>, callback: LoadInitialCallback<Result<GitHubDbUser>>) {
         val disposable = userDao.getUsers(0, params.requestedLoadSize.toLong()).get(callback,
                 Action {
@@ -54,7 +52,7 @@ class UserDataSource(
                 setRetry(null)
             }
         }) {
-//            callback.onResult(arrayListOf(Result.fromError(it)))
+            //            callback.onResult(arrayListOf(Result.fromError(it)))
             setRetry(action)
         }
     }

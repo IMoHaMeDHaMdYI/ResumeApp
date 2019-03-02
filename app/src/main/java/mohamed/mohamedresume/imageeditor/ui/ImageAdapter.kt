@@ -9,7 +9,7 @@ import kotlinx.android.synthetic.main.item_image.view.*
 import mohamed.mohamedresume.R
 import mohamed.mohamedresume.imageeditor.models.Image
 import mohamed.mohamedresume.intro.ui.adapters.BaseAdapter
-import mohamed.mohamedresume.utils.GlideApp
+import mohamed.mohamedresume.extensions.GlideApp
 
 class ImageAdapter(private val context: Context, private val dataList: ArrayList<Image>,
                    private val onAction: (action: Int, position: Int, image: Image) -> Unit

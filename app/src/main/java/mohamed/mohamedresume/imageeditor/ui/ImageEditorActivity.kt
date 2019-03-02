@@ -4,7 +4,6 @@ import android.content.res.Resources
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.os.Bundle
-import android.os.Environment
 import android.util.Log
 import android.widget.LinearLayout.HORIZONTAL
 import androidx.appcompat.app.AppCompatActivity
@@ -14,16 +13,9 @@ import com.zomato.photofilters.utils.ThumbnailItem
 import com.zomato.photofilters.utils.ThumbnailsManager
 import kotlinx.android.synthetic.main.activity_image_editor.*
 import mohamed.mohamedresume.R
-import mohamed.mohamedresume.utils.GlideApp
-import java.nio.file.Files.delete
-import java.nio.channels.FileChannel.MapMode.READ_WRITE
-import java.io.File.separator
-import android.os.Environment.getExternalStorageDirectory
-import java.io.File
+import mohamed.mohamedresume.extensions.GlideApp
 import java.io.FileNotFoundException
 import java.io.IOException
-import java.io.RandomAccessFile
-import java.nio.channels.FileChannel
 
 
 class ImageEditorActivity : AppCompatActivity() {

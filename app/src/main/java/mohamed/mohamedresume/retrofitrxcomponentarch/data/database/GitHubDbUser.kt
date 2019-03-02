@@ -9,17 +9,24 @@ import mohamed.mohamedresume.retrofitrxcomponentarch.models.GitHubUser
 data class GitHubDbUser(
         @ColumnInfo(name = "avatar_url")
         val avatarUrl: String?,
-        @ColumnInfo(name = "login")
+
         val login: String?,
-        @ColumnInfo(name = "name")
+
         val name: String?,
-        @ColumnInfo(name = "saved")
+
         var saved: Boolean = false,
+
         @PrimaryKey(autoGenerate = true)
-        val id: Long = 0
-) {
+        val id: Long = 0) {
+
     fun toGitHubUser(): GitHubUser {
-        return GitHubUser(avatarUrl, null, login, name, null, true)
+        return GitHubUser(
+                avatarUrl = avatarUrl,
+                bio = null,
+                login = login,
+                name = name,
+                message = null,
+                saved = true)
     }
 
     companion object {
@@ -35,4 +42,5 @@ data class GitHubDbUser(
             return u1.login == u2.login
         }
     }
+
 }
