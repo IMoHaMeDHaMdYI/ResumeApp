@@ -13,7 +13,11 @@ import kotlinx.android.synthetic.main.activity_camera.*
 import mohamed.mohamedresume.R
 import mohamed.mohamedresume.hardcodeddata.IMAGE_DIRECTORY
 import mohamed.mohamedresume.imageeditor.CameraHelper
+<<<<<<< HEAD
 import mohamed.mohamedresume.utils.GlideApp
+=======
+import mohamed.mohamedresume.extensions.GlideApp
+>>>>>>> 789e4ce35809e94201cd6a5d3b25ddca338ce3f7
 import java.io.File
 import java.io.FileOutputStream
 import java.io.OutputStream

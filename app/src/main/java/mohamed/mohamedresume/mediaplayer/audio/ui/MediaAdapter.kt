@@ -10,7 +10,7 @@ import kotlinx.android.synthetic.main.item_media.view.*
 import mohamed.mohamedresume.R
 import mohamed.mohamedresume.intro.ui.adapters.BaseAdapter
 import mohamed.mohamedresume.mediaplayer.audio.service.musicserviceutils.MediaNode
-import mohamed.mohamedresume.utils.GlideApp
+import mohamed.mohamedresume.extensions.GlideApp
 
 class MediaAdapter(private val context: Context, private val nodeList: ArrayList<MediaNode<MediaBrowserCompat.MediaItem>>,
                    private val onMediaItemClicked: (mediaId: String) -> Unit) :

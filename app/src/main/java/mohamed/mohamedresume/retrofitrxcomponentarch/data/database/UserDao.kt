@@ -10,6 +10,7 @@ import io.reactivex.Maybe
 
 @Dao
 interface UserDao {
+
     @Query("SELECT * FROM user")
     fun getAllUsers(): LiveData<Array<GitHubDbUser>>
 
@@ -24,4 +25,5 @@ interface UserDao {
 
     @Query("SELECT * FROM user WHERE login = :log")
     fun getUser(log: String): Maybe<GitHubDbUser>
+
 }

@@ -10,7 +10,7 @@ import kotlinx.android.synthetic.main.activity_home.*
 import mohamed.mohamedresume.R
 import mohamed.mohamedresume.hardcodeddata.Trip
 import mohamed.mohamedresume.intro.ui.adapters.WayAdapter
-import mohamed.mohamedresume.utils.wait
+import mohamed.mohamedresume.extensions.wait
 
 class HomeActivity : AppCompatActivity() {
 

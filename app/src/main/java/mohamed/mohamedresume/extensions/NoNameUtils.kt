@@ -1,4 +1,4 @@
-package mohamed.mohamedresume.utils
+package mohamed.mohamedresume.extensions
 
 import androidx.appcompat.app.AppCompatActivity
 import java.util.*
