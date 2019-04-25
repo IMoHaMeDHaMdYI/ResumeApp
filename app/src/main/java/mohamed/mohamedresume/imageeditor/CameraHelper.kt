@@ -20,12 +20,17 @@ import androidx.annotation.RequiresPermission
 import java.io.FileNotFoundException
 import java.io.IOException
 
-class CameraHelper(private val mActivity: Activity, private val mTextureView: TextureView,
-                   private val onImageAvailable: (ByteArray) -> Unit) {
-    private lateinit var mCameraDevice: CameraDevice
+class CameraHelper(
+    private val mActivity: Activity, private val mTextureView: TextureView,
+    private val onImageAvailable: (ByteArray) -> Unit
+) {
+
+
+    private var mCameraDevice: CameraDevice? = null
     private lateinit var mCameraId: String
-    private lateinit var mCameraCaptureSession: CameraCaptureSession
+    private var mCameraCaptureSession: CameraCaptureSession? = null
     private lateinit var mCaptureRequestBuilder: CaptureRequest.Builder
+    private lateinit var mPreviewRequest: CaptureRequest
     private lateinit var mImageDimension: Size
     private var mImageReader: ImageReader? = null
     private lateinit var mBackgroundHandler: Handler
@@ -34,6 +39,7 @@ class CameraHelper(private val mActivity: Activity, private val mTextureView: Te
     private var mStarted = false
     private var mCameraOpen = false
     private var onCameraAccessException: (CameraAccessException) -> Unit = {}
+
     private val ORIENTATIONS = SparseIntArray().apply {
         append(Surface.ROTATION_0, 90)
         append(Surface.ROTATION_90, 0)
@@ -42,11 +48,35 @@ class CameraHelper(private val mActivity: Activity, private val mTextureView: Te
     }
     private val mCameraManager = mActivity.getSystemService(Context.CAMERA_SERVICE) as CameraManager
 
-    private var mCaptureCallback: CameraCaptureSession.CaptureCallback = object : CameraCaptureSession.CaptureCallback() {
-        override fun onCaptureCompleted(session: CameraCaptureSession, request: CaptureRequest, result: TotalCaptureResult) {
-            super.onCaptureCompleted(session, request, result)
-            createCameraPreview(mImageDimension.width, mImageDimension.height)
+    private var mCaptureCallback: CameraCaptureSession.CaptureCallback =
+        object : CameraCaptureSession.CaptureCallback() {
+            override fun onCaptureCompleted(
+                session: CameraCaptureSession,
+                request: CaptureRequest,
+                result: TotalCaptureResult
+            ) {
+                super.onCaptureCompleted(session, request, result)
+            }
         }
+
+    //TODO add states and configure each of them.
+    private fun runPrecaptureSequence() {
+        try {
+            // This is how to tell the camera to trigger.
+            mCaptureRequestBuilder.set(
+                CaptureRequest.CONTROL_AE_PRECAPTURE_TRIGGER,
+                CaptureRequest.CONTROL_AE_PRECAPTURE_TRIGGER_START
+            )
+            // Tell #captureCallback to wait for the precapture sequence to be set.
+            state = STATE_WAITING_PRECAPTURE
+            mCameraCaptureSession?.capture(
+                mCaptureRequestBuilder.build(), mCaptureCallback,
+                mBackgroundHandler
+            )
+        } catch (e: CameraAccessException) {
+            Log.e(TAG, e.toString())
+        }
+
     }
 
     fun setCaptureCallback(captureCallback: CameraCaptureSession.CaptureCallback) {
@@ -78,12 +108,13 @@ class CameraHelper(private val mActivity: Activity, private val mTextureView: Te
         }
 
         override fun onDisconnected(camera: CameraDevice) {
-            mCameraDevice.close()
+            camera.close()
             mCameraOpen = false
+            mCameraDevice = null
         }
 
         override fun onError(camera: CameraDevice, error: Int) {
-            mCameraDevice.close()
+            onDisconnected(camera)
             mCameraOpen = false
             when (error) {
                 CameraDevice.StateCallback.ERROR_CAMERA_DEVICE ->
@@ -105,20 +136,22 @@ class CameraHelper(private val mActivity: Activity, private val mTextureView: Te
     }
 
     private var mReaderListener: ImageReader.OnImageAvailableListener = ImageReader.OnImageAvailableListener { reader ->
-        var img: Image? = null
-        Log.d(TAG, "reader Listener")
-        try {
-            img = reader.acquireLatestImage()
-            val byteBuffer = img.planes[0].buffer
-            val bytes = ByteArray(byteBuffer.capacity())
-            byteBuffer.get(bytes)
-            onImageAvailable(bytes)
-        } catch (e: FileNotFoundException) {
-            e.printStackTrace()
-        } catch (e: IOException) {
-            e.printStackTrace()
-        } finally {
-            img?.close()
+        mBackgroundHandler.post {
+            var img: Image? = null
+            Log.d(TAG, "reader Listener")
+            try {
+                img = reader.acquireLatestImage()
+                val byteBuffer = img.planes[0].buffer
+                val bytes = ByteArray(byteBuffer.capacity())
+                byteBuffer.get(bytes)
+                onImageAvailable(bytes)
+            } catch (e: FileNotFoundException) {
+                e.printStackTrace()
+            } catch (e: IOException) {
+                e.printStackTrace()
+            } finally {
+                img?.close()
+            }
         }
     }
 
@@ -130,19 +163,28 @@ class CameraHelper(private val mActivity: Activity, private val mTextureView: Te
         try {
             mCameraId = manager.cameraIdList[0]
             val cameraChars = manager.getCameraCharacteristics(mCameraId)
+            setUpCamera()
             cameraChars.get(CameraCharacteristics.SCALER_STREAM_CONFIGURATION_MAP)?.let { map ->
                 mImageDimension = map.getOutputSizes(SurfaceTexture::class.java)[0]
-                manager.openCamera(mCameraId, mStateCallback, null)
+                manager.openCamera(mCameraId, mStateCallback, mBackgroundHandler)
             }
         } catch (e: CameraAccessException) {
             e.printStackTrace()
         }
     }
 
-    fun closeCamera() {
-        if (mCameraOpen) {
-            mCameraDevice.close()
+    private fun closeCamera() {
+        try {
+            mCameraCaptureSession?.close()
+            mCameraCaptureSession = null
+            mCameraDevice?.close()
+            mCameraDevice = null
             mImageReader?.close()
+            mImageReader = null
+        } catch (e: InterruptedException) {
+            Log.d("Error", "Interrupt Error ${e.localizedMessage}")
+        } finally {
+
         }
         mCameraOpen = false
     }
@@ -161,22 +203,23 @@ class CameraHelper(private val mActivity: Activity, private val mTextureView: Te
             mTextureView.surfaceTexture?.let { texture ->
                 texture.setDefaultBufferSize(width, height)
                 val surface = Surface(texture)
-                mCaptureRequestBuilder = mCameraDevice.createCaptureRequest(CameraDevice.TEMPLATE_PREVIEW)
+                mCaptureRequestBuilder = mCameraDevice!!.createCaptureRequest(CameraDevice.TEMPLATE_PREVIEW)
                 mCaptureRequestBuilder.addTarget(surface)
-                mCameraDevice.createCaptureSession(
-                    listOf(surface).toMutableList(),
+                mCameraDevice?.createCaptureSession(
+                    listOf(surface, mImageReader?.surface).toMutableList(),
                     object : CameraCaptureSession.StateCallback() {
                         override fun onConfigureFailed(session: CameraCaptureSession) {
 
                         }
 
                         override fun onConfigured(session: CameraCaptureSession) {
+                            if (mCameraDevice == null) return
                             mCameraCaptureSession = session
                             updatePreview()
                         }
 
                     },
-                    null
+                    mBackgroundHandler
                 )
             }
         } catch (e: CameraAccessException) {
@@ -189,17 +232,21 @@ class CameraHelper(private val mActivity: Activity, private val mTextureView: Te
     }
 
     private fun updatePreview() {
-        mCaptureRequestBuilder.set(CaptureRequest.CONTROL_MODE, CameraMetadata.CONTROL_MODE_AUTO)
         try {
-            mCameraCaptureSession.setRepeatingRequest(mCaptureRequestBuilder.build(), null, mBackgroundHandler)
+            mCaptureRequestBuilder.set(
+                CaptureRequest.CONTROL_AF_MODE,
+                CameraMetadata.CONTROL_AF_MODE_CONTINUOUS_PICTURE
+            )
+            mPreviewRequest = mCaptureRequestBuilder.build()
+            mCameraCaptureSession!!.setRepeatingRequest(mPreviewRequest, mCaptureCallback, mBackgroundHandler)
         } catch (e: CameraAccessException) {
             onCameraAccessException(e)
         }
     }
 
-    fun takePicture(mxHeight: Int = 640, mxWidth: Int = 480) {
+    private fun setUpCamera(mxHeight: Int = 640, mxWidth: Int = 480) {
         try {
-            val cameraChars = mCameraManager.getCameraCharacteristics(mCameraDevice.id)
+            val cameraChars = mCameraManager.getCameraCharacteristics(mCameraId)
             val jpegSizes = cameraChars.get(CameraCharacteristics.SCALER_STREAM_CONFIGURATION_MAP)
                 ?.getOutputSizes(ImageFormat.JPEG)
             var height = mxHeight
@@ -211,34 +258,65 @@ class CameraHelper(private val mActivity: Activity, private val mTextureView: Te
                 }
             }
             mImageReader = ImageReader.newInstance(width, height, ImageFormat.JPEG, 1)
-            val outputSurfaces = ArrayList<Surface>().apply {
-                add(mImageReader!!.surface)
-                add(Surface(mTextureView.surfaceTexture))
-            }
-            val captureBuilder = mCameraDevice.createCaptureRequest(CameraDevice.TEMPLATE_STILL_CAPTURE)
-            captureBuilder.addTarget(mImageReader!!.surface)
-            captureBuilder.set(CaptureRequest.CONTROL_MODE, CameraMetadata.CONTROL_MODE_AUTO)
-            val rotation = mActivity.windowManager.defaultDisplay.rotation
-            captureBuilder.set(CaptureRequest.JPEG_ORIENTATION, ORIENTATIONS.get(rotation))
             mImageReader!!.setOnImageAvailableListener(mReaderListener, mBackgroundHandler)
-            mCameraDevice.createCaptureSession(outputSurfaces, object : CameraCaptureSession.StateCallback() {
-                override fun onConfigureFailed(session: CameraCaptureSession) {
-                    Log.d(TAG, "Configuration failed.")
-                }
-
-                override fun onConfigured(session: CameraCaptureSession) {
-                    Log.d(TAG, "Configured. ")
-                    try {
-                        session.capture(captureBuilder.build(), mCaptureCallback, mBackgroundHandler)
-                    } catch (e: CameraAccessException) {
-                        onCameraAccessException(e)
-                    }
-                }
-            }, mBackgroundHandler)
 
         } catch (e: CameraAccessException) {
             onCameraAccessException(e)
         }
+    }
+
+    fun takePicture() {
+        try {
+            val captureBuilder = mCameraDevice!!.createCaptureRequest(CameraDevice.TEMPLATE_STILL_CAPTURE)
+            captureBuilder.addTarget(mImageReader!!.surface)
+            captureBuilder.set(CaptureRequest.CONTROL_AF_MODE, CameraMetadata.CONTROL_AF_MODE_CONTINUOUS_PICTURE)
+            val rotation = mActivity.windowManager.defaultDisplay.rotation
+            captureBuilder.set(CaptureRequest.JPEG_ORIENTATION, ORIENTATIONS.get(rotation))
+            val captureCallback = object : CameraCaptureSession.CaptureCallback() {
+                override fun onCaptureCompleted(
+                    session: CameraCaptureSession,
+                    request: CaptureRequest,
+                    result: TotalCaptureResult
+                ) {
+                    unlockFocus()
+                }
+            }
+            mCameraCaptureSession?.apply {
+                stopRepeating()
+                abortCaptures()
+                capture(captureBuilder.build(), captureCallback, null)
+            }
+
+        } catch (e: CameraAccessException) {
+            onCameraAccessException(e)
+        }
+    }
+
+    /**
+     * Unlock the focus. This method should be called when still image capture sequence is
+     * finished.
+     */
+    private fun unlockFocus() {
+        try {
+            // Reset the auto-focus trigger
+            mCaptureRequestBuilder.set(
+                CaptureRequest.CONTROL_AF_TRIGGER,
+                CameraMetadata.CONTROL_AF_TRIGGER_CANCEL
+            )
+            mCameraCaptureSession?.capture(
+                mCaptureRequestBuilder.build(), mCaptureCallback,
+                mBackgroundHandler
+            )
+            // After this, the camera will go back to the normal state of preview.
+            state = STATE_PREVIEW
+            mCameraCaptureSession?.setRepeatingRequest(
+                mPreviewRequest, mCaptureCallback,
+                mBackgroundHandler
+            )
+        } catch (e: CameraAccessException) {
+            Log.e(TAG, e.toString())
+        }
+
     }
 
     @SuppressLint("MissingPermission")
@@ -259,4 +337,33 @@ class CameraHelper(private val mActivity: Activity, private val mTextureView: Te
         }
         mStarted = false
     }
+
+    /**
+     * Camera state: Showing camera preview.
+     */
+    private val STATE_PREVIEW = 0
+
+    /**
+     * Camera state: Waiting for the focus to be locked.
+     */
+    private val STATE_WAITING_LOCK = 1
+
+    /**
+     * Camera state: Waiting for the exposure to be precapture state.
+     */
+    private val STATE_WAITING_PRECAPTURE = 2
+
+    /**
+     * Camera state: Waiting for the exposure state to be something other than precapture.
+     */
+    private val STATE_WAITING_NON_PRECAPTURE = 3
+
+    /**
+     * Camera state: Picture was taken.
+     */
+    private val STATE_PICTURE_TAKEN = 4
+
+
+    private var state = STATE_PREVIEW
+
 }

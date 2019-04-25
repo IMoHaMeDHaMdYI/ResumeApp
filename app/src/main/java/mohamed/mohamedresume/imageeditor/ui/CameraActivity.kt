@@ -10,24 +10,20 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import kotlinx.android.synthetic.main.activity_camera.*
-import kotlinx.android.synthetic.main.activity_image_browser.*
 import mohamed.mohamedresume.R
 import mohamed.mohamedresume.hardcodeddata.IMAGE_DIRECTORY
 import mohamed.mohamedresume.imageeditor.CameraHelper
-import mohamed.mohamedresume.imageeditor.models.Image
 import mohamed.mohamedresume.utils.GlideApp
 import java.io.File
 import java.io.FileOutputStream
 import java.io.OutputStream
 import java.util.*
-import kotlin.collections.ArrayList
 
 
-//TODO Encrypt images before saving...
 class CameraActivity : AppCompatActivity() {
 
     private val TAG = this::class.java.simpleName
-
+    private var helperStarted = false
     private fun save(bytes: ByteArray) {
         var output: OutputStream? = null
         val directory = Environment.getExternalStorageDirectory()
@@ -40,11 +36,6 @@ class CameraActivity : AppCompatActivity() {
         try {
             output = FileOutputStream(file)
             output.write(bytes)
-            runOnUiThread {
-                GlideApp.with(this)
-                    .load(file.path)
-                    .into(imgPreview)
-            }
         } finally {
             output?.close()
         }
@@ -74,7 +65,10 @@ class CameraActivity : AppCompatActivity() {
                     return
                 }
             }
-            cameraHelper.openCamera()
+            if (helperStarted)
+                cameraHelper.openCamera()
+            else
+                cameraHelper.start()
         }
     }
 
@@ -91,15 +85,17 @@ class CameraActivity : AppCompatActivity() {
     @SuppressLint("MissingPermission")
     override fun onResume() {
         super.onResume()
-        if (!needPermissions())
+        if (!needPermissions()) {
             cameraHelper.start()
+            helperStarted = true
+        }
     }
 
     override fun onPause() {
         super.onPause()
         cameraHelper.stop()
+        helperStarted = false
     }
-
 
 
 }

@@ -3,6 +3,7 @@ package mohamed.mohamedresume.imageeditor.ui
 import android.content.res.Resources
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.graphics.Matrix
 import android.os.Bundle
 import android.os.Environment
 import android.util.Log
@@ -24,6 +25,9 @@ import java.io.FileNotFoundException
 import java.io.IOException
 import java.io.RandomAccessFile
 import java.nio.channels.FileChannel
+import android.media.ExifInterface
+
+
 
 
 class ImageEditorActivity : AppCompatActivity() {
@@ -47,13 +51,18 @@ class ImageEditorActivity : AppCompatActivity() {
 
         filterAdapter = ImageFilterAdapter(this, thumbnailItemList) {
             mBitmap?.let { bitmap ->
-                //TODO edit the orientation
-                val filteredImage = bitmap.copy(Bitmap.Config.ARGB_8888,true)
-                filteredImage.sameAs(bitmap)
-                Log.d(TAG, "$bitmap")
-                Log.d(TAG, "$filteredImage")
+                try {
+                    val exif = ExifInterface(mPath)
+                    val bit = Bitmap.createBitmap(bitmap)
+                    val orientation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION,ExifInterface.ORIENTATION_UNDEFINED)
+                    val filteredImage = rotateBitmap(bit,orientation) //bitmap.copy(Bitmap.Config.ARGB_8888,true)
+                    Log.d(TAG, "$bitmap")
+                    Log.d(TAG, "$filteredImage")
 
-                imgEdit.setImageBitmap(it.processFilter(filteredImage))
+                    imgEdit.setImageBitmap(it.processFilter(filteredImage))
+                } catch (e:IOException){
+
+                }
             }
         }
         mBitmap = getImageBitmap(mPath)
@@ -90,9 +99,9 @@ class ImageEditorActivity : AppCompatActivity() {
 
     private fun prepareThumbnail(bitmap: Bitmap) {
         val r = Runnable {
-            val dpSize = pxToDp(150)
-            //TODO find how to save orientation.
-            val thumbImage = BitmapFactory.decodeFile(mPath)?:return@Runnable //Bitmap.createScaledBitmap(bitmap, dpSize, dpSize, false) ?: return@Runnable
+            val exif = ExifInterface(mPath)
+            val orientation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION,ExifInterface.ORIENTATION_UNDEFINED)
+            val thumbImage = rotateBitmap(bitmap,orientation) ?: return@Runnable
             ThumbnailsManager.clearThumbs()
             thumbnailItemList.clear()
 
@@ -142,5 +151,42 @@ class ImageEditorActivity : AppCompatActivity() {
         }
 
         return imgIn
+    }
+
+    fun rotateBitmap(bitmap: Bitmap, orientation: Int): Bitmap? {
+
+        val matrix = Matrix()
+        when (orientation) {
+            ExifInterface.ORIENTATION_NORMAL -> return bitmap
+            ExifInterface.ORIENTATION_FLIP_HORIZONTAL -> matrix.setScale(-1f, 1f)
+            ExifInterface.ORIENTATION_ROTATE_180 -> matrix.setRotate(180f)
+            ExifInterface.ORIENTATION_FLIP_VERTICAL -> {
+                matrix.setRotate(180f)
+                matrix.postScale(-1f, 1f)
+            }
+            ExifInterface.ORIENTATION_TRANSPOSE -> {
+                matrix.setRotate(90f)
+                matrix.postScale(-1f, 1f)
+            }
+            ExifInterface.ORIENTATION_ROTATE_90 -> matrix.setRotate(90F)
+            ExifInterface.ORIENTATION_TRANSVERSE -> {
+                matrix.setRotate(-90F)
+                matrix.postScale(-1F, 1F)
+            }
+            ExifInterface.ORIENTATION_ROTATE_270 -> matrix.setRotate(-90F)
+            else -> return bitmap
+        }
+        return try {
+            val bmRotated = Bitmap.createBitmap(bitmap, 0, 0, bitmap.width, bitmap.height, matrix, true)
+//            bitmap.recycle()
+            bmRotated
+        } catch (e: OutOfMemoryError) {
+            e.printStackTrace()
+            null
+        } catch (e:OutOfMemoryError) {
+            e.printStackTrace()
+            null
+        }
+
     }
 }

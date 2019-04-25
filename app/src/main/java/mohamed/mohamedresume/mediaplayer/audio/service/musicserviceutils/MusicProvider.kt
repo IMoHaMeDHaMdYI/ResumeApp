@@ -6,10 +6,7 @@ import android.support.v4.media.MediaMetadataCompat
 
 // Music will be the same, they are pre-downloaded into the assets folder
 object MusicProvider {
-    val uriList = arrayListOf("asset:///heart_attack.mp3", "asset:///heart_attack.mp3")//.map {
-    // TODO put an icon for the app to be prepared to be uploaded.
-//        Uri.parse(it)
-//    }
+    val uriList = arrayListOf("asset:///heart_attack.mp3", "asset:///heart_attack.mp3")
 
     var i = 0
     val mediaMetadataList = uriList.map {

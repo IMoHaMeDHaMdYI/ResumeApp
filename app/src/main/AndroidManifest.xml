@@ -42,7 +42,7 @@
         <receiver android:name=".alarm.AlarmReceiver" />
 
         <activity android:name=".alarm.AlarmActivity" />
-        <activity android:name=".imageeditor.ui.ImageBrowserActivity" />
+        <activity android:name=".imageeditor.ui.ImageBrowserActivity" android:exported="true" />
         <activity android:name=".imageeditor.ui.CameraActivity" />
         <activity android:name=".imageeditor.ui.ImageEditorActivity"></activity>
     </application>

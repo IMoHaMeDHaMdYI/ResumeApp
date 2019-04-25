@@ -13,11 +13,9 @@ import mohamed.mohamedresume.R
 import mohamed.mohamedresume.imageeditor.models.Image
 
 
-private var mImages = ArrayList<Image>()
-private var mCurrentItem: Int = 0
-
 class FullScreenFragment : Fragment() {
-
+    private var mImages = ArrayList<Image>()
+    private var mCurrentItem: Int = 0
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -47,10 +45,12 @@ class FullScreenFragment : Fragment() {
         }
 
         fun create(pos: Int, images: ArrayList<Image>): FullScreenFragment {
-            mImages = images
-            mCurrentItem = pos
+
             Log.d(TAG, "Current pos is $pos")
-            return FullScreenFragment()
+            return FullScreenFragment().apply {
+                mImages = images
+                mCurrentItem = pos
+            }
         }
     }
 

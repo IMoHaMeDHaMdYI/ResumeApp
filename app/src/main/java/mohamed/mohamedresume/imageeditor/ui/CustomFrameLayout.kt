@@ -57,10 +57,6 @@ class CustomFrameLayout(context: Context, attributeSet: AttributeSet) : FrameLay
 
 
         override fun clampViewPositionVertical(child: View, top: Int, dy: Int): Int {
-            //TODO play around here a little bit.
-            // TODO try adding the top to the padding top
-
-            Log.d("class", "$top,$dy $y ")
             return (y + top).toInt()
         }
 

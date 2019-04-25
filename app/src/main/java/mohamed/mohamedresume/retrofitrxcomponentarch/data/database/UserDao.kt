@@ -7,8 +7,6 @@ import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import io.reactivex.Flowable
 import io.reactivex.Maybe
-import io.reactivex.Observable
-import io.reactivex.Single
 
 @Dao
 interface UserDao {

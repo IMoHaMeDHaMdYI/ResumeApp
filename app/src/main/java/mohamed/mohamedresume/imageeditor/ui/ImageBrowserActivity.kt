@@ -68,7 +68,6 @@ class ImageBrowserActivity : AppCompatActivity() {
                 ImageAdapter.ACTION_LONG_CLICK_IMG -> {
                     if (mode == MODE_BROWSE) {
                         mode = MODE_EDIT
-                        //TODO update UI to be in the edit mode
                         switchMode()
                         imageAdapter.setMode(mode)
                         imageAdapter.notifyDataSetChanged()
@@ -129,10 +128,10 @@ class ImageBrowserActivity : AppCompatActivity() {
     private fun getImages() {
         val file = getImageDirectory()
         file?.let { f ->
-            return f.listFiles { dir, name ->
+            f.listFiles { dir, name ->
                 Log.d(TAG, "$dir")
                 name.substringAfterLast(".") == "jpg"
-            }.forEach {
+            }?.forEach {
                 mImageList.add(Image(it.path))
             }
         }

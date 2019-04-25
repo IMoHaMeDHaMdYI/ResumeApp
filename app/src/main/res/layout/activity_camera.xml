@@ -55,11 +55,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@id/viewBackground" />
 
-    <ImageView
-        android:id="@+id/imgPreview"
-        android:src="@color/colorAccent"
-        android:layout_width="100dp"
-        android:layout_height="100dp" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -68,8 +68,6 @@ class ImageAdapter(private val context: Context, private val dataList: ArrayList
         return mMode
     }
 
-    //TODO on long click select
-    //TODO on click show in full screen
     class ImageViewHolder(val view: View) : RecyclerView.ViewHolder(view) {
         val img = view.img ?: null
         val checkbox = view.checkbox ?: null
